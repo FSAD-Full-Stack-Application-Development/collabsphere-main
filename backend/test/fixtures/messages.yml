@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sender: one
+  receiver: one
+  project: one
+  content: MyText
+  sent_at: 2025-10-30 01:06:00
+  is_read: false
+
+two:
+  sender: two
+  receiver: two
+  project: two
+  content: MyText
+  sent_at: 2025-10-30 01:06:00
+  is_read: false

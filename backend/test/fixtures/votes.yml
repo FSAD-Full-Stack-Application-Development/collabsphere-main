@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  project: one
+  user: one
+  vote_type: MyString
+  voted_at: 2025-10-30 01:05:49
+
+two:
+  project: two
+  user: two
+  vote_type: MyString
+  voted_at: 2025-10-30 01:05:49

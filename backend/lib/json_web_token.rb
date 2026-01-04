@@ -1,0 +1,19 @@
+class JsonWebToken
+  # Use environment variable first, then Rails credentials, then generate one
+  SECRET_KEY = ENV['JWT_SECRET_KEY'] || 
+               Rails.application.credentials.secret_key_base || 
+               Rails.application.secret_key_base ||
+               'your_secret_key_here_CHANGE_IN_PRODUCTION'
+
+  def self.encode(payload, exp = 24.hours.from_now)
+    payload[:exp] = exp.to_i
+    JWT.encode(payload, SECRET_KEY)
+  end
+
+  def self.decode(token)
+    decoded = JWT.decode(token, SECRET_KEY)[0]
+    HashWithIndifferentAccess.new decoded
+  rescue JWT::DecodeError => e
+    nil
+  end
+end

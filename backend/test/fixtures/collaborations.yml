@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  project: one
+  user: one
+  project_role: MyString
+  permission_level: MyString
+
+two:
+  project: two
+  user: two
+  project_role: MyString
+  permission_level: MyString
