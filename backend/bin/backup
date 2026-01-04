@@ -1,0 +1,48 @@
+#!/bin/bash
+# CollabSphere Database Backup Script
+# This script performs automated database backups and can be scheduled with cron
+
+set -e  # Exit on error
+
+# Configuration
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+APP_DIR="$(dirname "$SCRIPT_DIR")"
+LOG_FILE="$APP_DIR/backups/backup.log"
+TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
+
+# Ensure backup directory exists
+mkdir -p "$APP_DIR/backups"
+
+# Log function
+log() {
+    echo "[$TIMESTAMP] $1" | tee -a "$LOG_FILE"
+}
+
+# Main backup function
+main() {
+    log "========================================="
+    log "Database Backup Started"
+    log "========================================="
+    
+    cd "$APP_DIR"
+    
+    # Run Rails backup task
+    if RAILS_ENV=production bundle exec rails db:backup:create >> "$LOG_FILE" 2>&1; then
+        log "✓ Backup completed successfully"
+        
+        # Send success notification (optional)
+        # You can add email/slack notification here
+        
+        exit 0
+    else
+        log "✗ Backup failed!"
+        
+        # Send failure notification (optional)
+        # You can add email/slack notification here
+        
+        exit 1
+    fi
+}
+
+# Run main function
+main "$@"

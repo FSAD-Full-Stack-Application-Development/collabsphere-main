@@ -1,0 +1,24 @@
+FROM ruby:3.2.3
+
+# Install minimal packages needed for Rails assets and DB adapters
+RUN apt-get update -qq && \
+    apt-get install -y --no-install-recommends build-essential libpq-dev nodejs yarn && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Cache and install gems
+COPY Gemfile Gemfile.lock ./
+RUN gem install bundler && bundle install --jobs 4 --retry 3
+
+# Copy application code
+COPY . .
+
+ENV RAILS_ENV=production
+
+# Precompile assets if present (will be NO-OP if no assets configured)
+RUN if [ -f package.json ]; then npm install --production --silent && npm run build --silent || true; fi
+
+EXPOSE 3000
+
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]

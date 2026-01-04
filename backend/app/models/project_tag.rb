@@ -1,0 +1,6 @@
+class ProjectTag < ApplicationRecord
+  belongs_to :project
+  belongs_to :tag
+  
+  validates :project_id, uniqueness: { scope: :tag_id }
+end
