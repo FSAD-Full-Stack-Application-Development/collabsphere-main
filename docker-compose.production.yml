@@ -1,0 +1,57 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: collabsphere_development
+      POSTGRES_USER: collabsphere
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U collabsphere"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  backend:
+    image: sak3e/projectbackend:v1.2
+    ports:
+      - "8000:3000"
+    environment:
+      - DATABASE_URL=postgresql://collabsphere:password@postgres:5432/collabsphere_development
+      - RAILS_ENV=development
+      - RAILS_LOG_TO_STDOUT=true
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-your_128_char_secure_key_here}
+      - FRONTEND_URL=http://192.41.170.117:8001
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    image: sak3e/projectfe:v1.2
+    working_dir: /app
+    ports:
+      - "8001:3001"
+    environment:
+      - REACT_APP_API_URL=https://web06.cs.ait.ac.th/be
+      - REACT_APP_NAME=CollabSphere
+      - REACT_APP_VERSION=1.2.0
+      - PORT=3001
+      - WDS_SOCKET_PORT=0
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    depends_on:
+      - backend
+    stdin_open: true
+    tty: true
+
+volumes:
+  postgres_data:
+
+networks:
+  default:
+    name: collabsphere_network

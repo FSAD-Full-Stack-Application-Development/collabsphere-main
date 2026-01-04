@@ -1,0 +1,255 @@
+// CollabSphere Database Schema for DrawDB.io
+// Generated: November 5, 2025
+// Total Tables: 13 (11 entities + 2 join tables)
+
+// ========================================
+// CORE ENTITIES
+// ========================================
+
+Table users {
+  id bigint [pk, increment]
+  full_name varchar(255)
+  email varchar(255) [unique, not null]
+  password_digest varchar(255) [not null] // bcrypt encrypted
+  system_role varchar(50) [default: 'user'] // 'admin' or 'user'
+  bio text
+  avatar_url varchar(255)
+  country varchar(100)
+  university varchar(255)
+  department varchar(255)
+  created_at timestamp [not null, default: `current_timestamp`]
+  updated_at timestamp [not null, default: `current_timestamp`]
+  
+  Note: 'User accounts and profile data. AIT integration via university/department fields.'
+}
+
+Table projects {
+  id bigint [pk, increment]
+  owner_id bigint [not null, ref: > users.id]
+  title varchar(255) [not null]
+  description text [not null]
+  status varchar(50) [default: 'Ideation'] // Ideation, Ongoing, Completed
+  visibility varchar(50) [default: 'public'] // public, private, restricted
+  show_funds boolean [default: false]
+  project_phase varchar(100)
+  funding_goal decimal(12,2)
+  current_funding decimal(12,2) [default: 0.0]
+  created_at timestamp [not null, default: `current_timestamp`]
+  updated_at timestamp [not null, default: `current_timestamp`]
+  
+  Indexes {
+    owner_id
+    status
+    visibility
+    created_at
+  }
+  
+  Note: 'Core content entity - innovation projects with workflow states'
+}
+
+Table collaborations {
+  id bigint [pk, increment]
+  project_id bigint [not null, ref: > projects.id]
+  user_id bigint [not null, ref: > users.id]
+  project_role integer [default: 1] // 0=owner, 1=member, 2=viewer
+  created_at timestamp [not null, default: `current_timestamp`]
+  updated_at timestamp [not null, default: `current_timestamp`]
+  
+  Indexes {
+    project_id
+    user_id
+    (user_id, project_id) [unique, name: 'unique_user_project']
+  }
+  
+  Note: 'Team memberships with role-based permissions'
+}
+
+Table comments {
+  id bigint [pk, increment]
+  project_id bigint [not null, ref: > projects.id]
+  user_id bigint [not null, ref: > users.id]
+  parent_id bigint [ref: > comments.id] // Self-referential for threading
+  content text [not null]
+  created_at timestamp [not null, default: `current_timestamp`]
+  updated_at timestamp [not null, default: `current_timestamp`]
+  
+  Indexes {
+    project_id
+    user_id
+    parent_id
+  }
+  
+  Note: 'Threaded discussion system with nested replies'
+}
+
+Table votes {
+  id bigint [pk, increment]
+  project_id bigint [not null, ref: > projects.id]
+  user_id bigint [not null, ref: > users.id]
+  vote_type varchar(20) [not null] // 'up' or 'down'
+  voted_at timestamp
+  created_at timestamp [not null, default: `current_timestamp`]
+  updated_at timestamp [not null, default: `current_timestamp`]
+  
+  Indexes {
+    project_id
+    user_id
+    (user_id, project_id) [unique, name: 'unique_vote_per_user']
+  }
+  
+  Note: 'Upvote/downvote system - one vote per user per project'
+}
+
+Table messages {
+  id bigint [pk, increment]
+  sender_id bigint [not null, ref: > users.id]
+  receiver_id bigint [not null, ref: > users.id]
+  project_id bigint [ref: > projects.id] // Optional context
+  content text [not null]
+  sent_at timestamp
+  is_read boolean [default: false]
+  created_at timestamp [not null, default: `current_timestamp`]
+  updated_at timestamp [not null, default: `current_timestamp`]
+  
+  Indexes {
+    sender_id
+    receiver_id
+    (sender_id, receiver_id)
+    project_id
+    is_read
+  }
+  
+  Note: 'Private user-to-user messaging with read receipts'
+}
+
+Table resources {
+  id bigint [pk, increment]
+  project_id bigint [not null, ref: > projects.id]
+  title varchar(255) [not null]
+  description text
+  url varchar(500) [not null] // File URL or external link
+  added_by_id bigint [not null, ref: > users.id]
+  created_at timestamp [not null, default: `current_timestamp`]
+  updated_at timestamp [not null, default: `current_timestamp`]
+  
+  Indexes {
+    project_id
+    added_by_id
+  }
+  
+  Note: 'Project attachments - files, documents, and links'
+}
+
+Table funds {
+  id bigint [pk, increment]
+  project_id bigint [not null, ref: > projects.id]
+  funder_id bigint [not null, ref: > users.id]
+  amount decimal(12,2) [not null] // Precision to cents
+  funded_at timestamp
+  created_at timestamp [not null, default: `current_timestamp`]
+  updated_at timestamp [not null, default: `current_timestamp`]
+  
+  Indexes {
+    project_id
+    funder_id
+    (project_id, funder_id)
+  }
+  
+  Note: 'Financial contributions to projects - immutable for audit trail'
+}
+
+Table tags {
+  id bigint [pk, increment]
+  tag_name varchar(100) [unique, not null]
+  created_at timestamp [not null, default: `current_timestamp`]
+  updated_at timestamp [not null, default: `current_timestamp`]
+  
+  Note: 'Global taxonomy for categorizing projects and users'
+}
+
+Table project_stats {
+  id bigint [pk, increment]
+  project_id bigint [not null, unique, ref: - projects.id] // 1:1 relationship
+  total_views integer [default: 0]
+  total_votes integer [default: 0]
+  total_comments integer [default: 0]
+  last_updated timestamp
+  created_at timestamp [not null, default: `current_timestamp`]
+  updated_at timestamp [not null, default: `current_timestamp`]
+  
+  Indexes {
+    project_id [unique]
+    total_views
+    total_votes
+  }
+  
+  Note: 'Aggregate engagement metrics for leaderboards and trending'
+}
+
+// ========================================
+// JOIN TABLES (Many-to-Many)
+// ========================================
+
+Table project_tags {
+  id bigint [pk, increment]
+  project_id bigint [not null, ref: > projects.id]
+  tag_id bigint [not null, ref: > tags.id]
+  created_at timestamp [not null, default: `current_timestamp`]
+  updated_at timestamp [not null, default: `current_timestamp`]
+  
+  Indexes {
+    project_id
+    tag_id
+    (project_id, tag_id) [unique, name: 'unique_project_tag']
+  }
+  
+  Note: 'Many-to-many: Projects can have multiple tags'
+}
+
+Table user_tags {
+  id bigint [pk, increment]
+  user_id bigint [not null, ref: > users.id]
+  tag_id bigint [not null, ref: > tags.id]
+  created_at timestamp [not null, default: `current_timestamp`]
+  updated_at timestamp [not null, default: `current_timestamp`]
+  
+  Indexes {
+    user_id
+    tag_id
+    (user_id, tag_id) [unique, name: 'unique_user_tag']
+  }
+  
+  Note: 'Many-to-many: Users can have multiple tags for skills/interests'
+}
+
+// ========================================
+// RELATIONSHIPS SUMMARY
+// ========================================
+
+// User Relationships:
+// - users 1:M projects (as owner)
+// - users 1:M collaborations
+// - users 1:M comments
+// - users 1:M votes
+// - users 1:M messages (as sender)
+// - users 1:M messages (as receiver)
+// - users 1:M funds (as funder)
+// - users 1:M resources (as uploader)
+// - users M:M tags (via user_tags)
+
+// Project Relationships:
+// - projects 1:M collaborations
+// - projects 1:M comments
+// - projects 1:M votes
+// - projects 1:M resources
+// - projects 1:M funds
+// - projects 1:M messages (optional context)
+// - projects 1:1 project_stats
+// - projects M:M tags (via project_tags)
+
+// Comment Self-Referential:
+// - comments 1:M comments (parent-child threading)
+
+// Tag Relationships:
+// - tags M:M projects (via project_tags)
+// - tags M:M users (via user_tags)

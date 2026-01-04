@@ -1,0 +1,54 @@
+services:
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: collabsphere_development
+      POSTGRES_USER: collabsphere
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: collabsphere-backend:dev
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://collabsphere:password@postgres:5432/collabsphere_development
+      - RAILS_ENV=development
+      - RAILS_LOG_TO_STDOUT=true
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-your_128_char_secure_key_here}
+      - FRONTEND_URL=http://localhost:3001
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - postgres
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: collabsphere-frontend:dev
+    ports:
+      - "3001:3000"
+    environment:
+      - REACT_APP_API_URL=https://web06.cs.ait.ac.th/be
+      - REACT_APP_NAME=CollabSphere
+      - REACT_APP_VERSION=1.0.0
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    depends_on:
+      - backend
+    stdin_open: true
+    tty: true
+
+volumes:
+  postgres_data:
+
+networks:
+  default:
+    name: collabsphere_network

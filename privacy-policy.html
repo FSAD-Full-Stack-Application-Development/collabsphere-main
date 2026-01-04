@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy - CollabSphere</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        line-height: 1.6;
+        color: #2c3e50;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        font-size: 16px;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.98);
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        margin: 2rem auto;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding: 2rem 0;
+        position: relative;
+      }
+
+      .header::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(135deg, #e8b44c 0%, #4a90e2 100%);
+        border-radius: 2px;
+      }
+
+      .logo {
+        font-size: clamp(2.5rem, 5vw, 3.5rem);
+        font-weight: 700;
+        background: linear-gradient(135deg, #e8b44c 0%, #4a90e2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.02em;
+      }
+
+      .subtitle {
+        color: #6c757d;
+        font-size: clamp(1rem, 2vw, 1.2rem);
+        font-weight: 400;
+      }
+
+      h1 {
+        color: #1a202c;
+        margin-bottom: 1.5rem;
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        font-weight: 700;
+        text-align: center;
+        line-height: 1.2;
+      }
+
+      .effective-date {
+        text-align: center;
+        color: #6c757d;
+        font-size: 1rem;
+        margin-bottom: 2rem;
+        font-style: italic;
+      }
+
+      .intro {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: #4a5568;
+        margin-bottom: 2rem;
+        text-align: center;
+        padding: 1.5rem;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 12px;
+        border-left: 4px solid #e8b44c;
+      }
+
+      h2 {
+        color: #1a202c;
+        margin: 3rem 0 1.5rem 0;
+        font-size: clamp(1.4rem, 3vw, 1.8rem);
+        font-weight: 600;
+        position: relative;
+        padding-left: 1rem;
+      }
+
+      h2::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.2rem;
+        width: 4px;
+        height: 1.2rem;
+        background: linear-gradient(135deg, #e8b44c 0%, #4a90e2 100%);
+        border-radius: 2px;
+      }
+
+      h3 {
+        color: #2d3748;
+        margin: 2rem 0 1rem 0;
+        font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+        font-weight: 600;
+      }
+
+      p {
+        margin-bottom: 1.2rem;
+        color: #4a5568;
+        line-height: 1.7;
+      }
+
+      ul,
+      ol {
+        margin-bottom: 1.5rem;
+        padding-left: 1.5rem;
+      }
+
+      li {
+        margin-bottom: 0.8rem;
+        color: #4a5568;
+        line-height: 1.6;
+      }
+
+      .highlight {
+        background: linear-gradient(135deg, #e8b44c 0%, #4a90e2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 600;
+      }
+
+      .contact-info {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 2rem;
+        border-radius: 12px;
+        margin: 2rem 0;
+        border: 1px solid rgba(232, 180, 76, 0.2);
+        position: relative;
+      }
+
+      .contact-info::before {
+        content: "📧";
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 1.5rem;
+      }
+
+      .contact-info p {
+        margin-bottom: 0.8rem;
+        font-size: 1rem;
+      }
+
+      .contact-info strong {
+        color: #1a202c;
+        font-weight: 600;
+      }
+
+      .last-updated {
+        text-align: center;
+        color: #6c757d;
+        font-style: italic;
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 2px solid #f1f3f4;
+        font-size: 0.9rem;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .container {
+          margin: 1rem;
+          padding: 1.5rem;
+          border-radius: 16px;
+        }
+
+        .header {
+          margin-bottom: 2rem;
+          padding: 1.5rem 0;
+        }
+
+        .intro {
+          padding: 1rem;
+          font-size: 1rem;
+        }
+
+        h2 {
+          margin: 2rem 0 1rem 0;
+          font-size: 1.3rem;
+        }
+
+        h3 {
+          margin: 1.5rem 0 0.8rem 0;
+          font-size: 1.1rem;
+        }
+
+        ul,
+        ol {
+          padding-left: 1.2rem;
+        }
+
+        li {
+          margin-bottom: 0.6rem;
+          font-size: 0.95rem;
+        }
+
+        .contact-info {
+          padding: 1.5rem;
+        }
+
+        .contact-info::before {
+          font-size: 1.2rem;
+          top: 0.8rem;
+          right: 0.8rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        body {
+          font-size: 14px;
+        }
+
+        .container {
+          margin: 0.5rem;
+          padding: 1rem;
+        }
+
+        .logo {
+          font-size: 2rem;
+        }
+
+        h1 {
+          font-size: 1.6rem;
+        }
+
+        .intro {
+          padding: 0.8rem;
+          font-size: 0.95rem;
+        }
+
+        h2 {
+          font-size: 1.2rem;
+          padding-left: 0.8rem;
+        }
+
+        h2::before {
+          width: 3px;
+          height: 1rem;
+          top: 0.15rem;
+        }
+      }
+
+      /* Smooth scrolling and animations */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      * {
+        transition: all 0.3s ease;
+      }
+
+      /* Print styles */
+      @media print {
+        body {
+          background: white !important;
+        }
+
+        .container {
+          box-shadow: none !important;
+          border: 1px solid #ddd !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="logo">CollabSphere</div>
+        <div class="subtitle">Connecting University Minds Worldwide</div>
+      </div>
+
+      <h1>Privacy Policy</h1>
+
+      <div class="effective-date">
+        <strong>Effective Date:</strong> December 2, 2025
+      </div>
+
+      <div class="intro">
+        Welcome to <span class="highlight">CollabSphere</span>! We are committed
+        to protecting your privacy and ensuring the security of your personal
+        information. This Privacy Policy explains how we collect, use, disclose,
+        and safeguard your information when you use our platform.
+      </div>
+
+      <h2>1. Information We Collect</h2>
+
+      <h3>1.1 Personal Information</h3>
+      <p>We may collect the following personal information:</p>
+      <ul>
+        <li>
+          <strong>Name and contact information</strong> (email address, phone
+          number)
+        </li>
+        <li>
+          <strong>Educational information</strong> (university, department,
+          academic interests)
+        </li>
+        <li>
+          <strong>Profile information</strong> (bio, skills, project
+          preferences)
+        </li>
+        <li><strong>Account credentials</strong> (username, password)</li>
+      </ul>
+
+      <h3>1.2 Usage Information</h3>
+      <p>
+        We automatically collect certain information about your use of our
+        platform:
+      </p>
+      <ul>
+        <li>
+          <strong>Device information</strong> (IP address, browser type,
+          operating system)
+        </li>
+        <li>
+          <strong>Usage data</strong> (pages visited, time spent, features used)
+        </li>
+        <li>
+          <strong>Location data</strong> (general location based on IP address)
+        </li>
+        <li><strong>Cookies and similar tracking technologies</strong></li>
+      </ul>
+
+      <h2>2. How We Use Your Information</h2>
+      <p>We use the collected information for the following purposes:</p>
+      <ul>
+        <li>Provide and maintain our platform services</li>
+        <li>Create and manage your account</li>
+        <li>Facilitate collaboration between users</li>
+        <li>Send important notifications and updates</li>
+        <li>Improve our platform and develop new features</li>
+        <li>Ensure platform security and prevent fraud</li>
+        <li>Comply with legal obligations</li>
+      </ul>
+
+      <h2>3. Information Sharing and Disclosure</h2>
+      <p>
+        We do not sell, trade, or rent your personal information to third
+        parties. We may share your information only in the following
+        circumstances:
+      </p>
+      <ul>
+        <li>
+          <strong>With your consent:</strong> When you explicitly agree to share
+          information
+        </li>
+        <li>
+          <strong>Service providers:</strong> With trusted third-party service
+          providers who help us operate our platform
+        </li>
+        <li>
+          <strong>Legal requirements:</strong> When required by law or to
+          protect our rights
+        </li>
+        <li>
+          <strong>Platform safety:</strong> To prevent fraud, abuse, or security
+          threats
+        </li>
+      </ul>
+
+      <h2>4. Data Security</h2>
+      <p>
+        We implement appropriate technical and organizational measures to
+        protect your personal information against unauthorized access,
+        alteration, disclosure, or destruction. These measures include:
+      </p>
+      <ul>
+        <li>Encryption of data in transit and at rest</li>
+        <li>Regular security audits and updates</li>
+        <li>Access controls and authentication mechanisms</li>
+        <li>Secure data storage and backup procedures</li>
+      </ul>
+
+      <h2>5. Your Rights and Choices</h2>
+      <p>You have the following rights regarding your personal information:</p>
+      <ul>
+        <li>
+          <strong>Access:</strong> Request access to your personal information
+        </li>
+        <li>
+          <strong>Correction:</strong> Request correction of inaccurate
+          information
+        </li>
+        <li>
+          <strong>Deletion:</strong> Request deletion of your personal
+          information
+        </li>
+        <li><strong>Portability:</strong> Request transfer of your data</li>
+        <li><strong>Opt-out:</strong> Opt-out of marketing communications</li>
+      </ul>
+
+      <h2>6. Cookies and Tracking Technologies</h2>
+      <p>
+        We use cookies and similar technologies to enhance your experience on
+        our platform. You can control cookie settings through your browser
+        preferences.
+      </p>
+
+      <h2>7. Third-Party Links</h2>
+      <p>
+        Our platform may contain links to third-party websites. We are not
+        responsible for the privacy practices of these external sites.
+      </p>
+
+      <h2>8. Children's Privacy</h2>
+      <p>
+        Our platform is intended for users 18 years and older. We do not
+        knowingly collect personal information from children under 18.
+      </p>
+
+      <h2>9. Changes to This Privacy Policy</h2>
+      <p>
+        We may update this Privacy Policy from time to time. We will notify you
+        of any material changes by posting the new policy on our platform and
+        updating the effective date.
+      </p>
+
+      <h2>10. Contact Us</h2>
+      <div class="contact-info">
+        <p>
+          If you have any questions about this Privacy Policy or our privacy
+          practices, please contact us:
+        </p>
+        <p><strong>Email:</strong> privacy@collabsphere.com</p>
+        <p>
+          <strong>Address:</strong> CollabSphere Privacy Team, Kathmandu, Nepal
+        </p>
+      </div>
+
+      <div class="last-updated">
+        <p>Last updated: December 2, 2025</p>
+      </div>
+    </div>
+  </body>
+</html>
