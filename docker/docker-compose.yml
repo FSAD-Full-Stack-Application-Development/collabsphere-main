@@ -1,0 +1,7 @@
+version: "3.8"
+services:
+  flutter:
+    image: sak3e/flutter-web-app
+    ports:
+      - "8080:80"
+    restart: unless-stopped
